@@ -6,7 +6,7 @@ final public class HealthCardID {
     private final String personalID;
 
     public HealthCardID(String code) {
-        this. personalID = code;
+        this.personalID = code;
     }
 
     public String getPersonalID() {
@@ -30,5 +30,9 @@ final public class HealthCardID {
     public String toString() {
         return "HealthCardID{" + "personal code='" + personalID + '\'' + '}';
     }
+
+    //TODO afegir alguna excepcio?
+    //TODO TEST (constructor le llegue null, código de identificación mal formado)
+    //TODO ¿Cuál es el caso de las otras clases básicas? - Preguntar a que es refereix
 }
 

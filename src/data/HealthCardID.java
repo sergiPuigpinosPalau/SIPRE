@@ -1,12 +1,31 @@
 package data;
+
+import exceptions.InvalidCIPFormat;
+
 /**
  * The personal identifying code in the National Health Service.
  */
 final public class HealthCardID {
     private final String personalID;
 
-    public HealthCardID(String code) {
+    public HealthCardID(String code) throws InvalidCIPFormat{
+        if (code == null)
+            throw new IllegalArgumentException("Argument 'code' cannot be null");
+        checkCIPFormat(code);
         this.personalID = code;
+    }
+
+    private void checkCIPFormat(String code) throws InvalidCIPFormat{
+        if (code.length() < 28)
+            throw new InvalidCIPFormat();
+
+        if (!code.startsWith("BBBBBBBB") || !Character.isUpperCase(code.charAt(8)) || !Character.isUpperCase(code.charAt(9)))
+            throw new InvalidCIPFormat();
+
+        for (char numb:code.substring(10,28).toCharArray()) {
+            if (!Character.isDigit(numb))
+                throw new InvalidCIPFormat();
+        }
     }
 
     public String getPersonalID() {

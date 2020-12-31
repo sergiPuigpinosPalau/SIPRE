@@ -21,6 +21,7 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     private HealthCardID hcID; // the healthcard ID of the patient
     private DigitalSignature eSign; // the eSignature of the doctor
     private List<MedicalPrescriptionLine> prescriptionLines;
+    private int numOfInstructions;
 
     //TODO ??? // Its components, that is, the set of medical prescription lines
 
@@ -30,16 +31,17 @@ public class MedicalPrescription {// A class that represents medical prescriptio
         this.endDate = endDate;
         this.hcID = hcID;
         this.eSign = eSign;
+        this.numOfInstructions=6;       //In case they add more instructions
     }
 
     public void addLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException {
-        if (instruc.length < 6)
+        if (instruc.length < numOfInstructions)
             throw new IncorrectTakingGuidelinesException("Missing Information");
         prescriptionLines.add(new MedicalPrescriptionLine(prodID, instruc));
     }
 
     public void modifyLine(ProductID prodID, String[] instruc) throws ProductNotInPrescription, IncorrectTakingGuidelinesException {
-        if (instruc.length < 6)
+        if (instruc.length < numOfInstructions)
             throw new IncorrectTakingGuidelinesException("Missing Information");
         getPrescriptionLineFromProdID(prodID).modifyPrescriptionLine(instruc);
     }
@@ -56,5 +58,52 @@ public class MedicalPrescription {// A class that represents medical prescriptio
         throw new ProductNotInPrescription();
     }
 
-    //TODO ??? // the getters and setters
+    public int getPrescCode() {
+        return prescCode;
+    }
+
+    public void setPrescCode(int prescCode) {
+        this.prescCode = prescCode;
+    }
+
+    public Date getPrescDate() {
+        return prescDate;
+    }
+
+    public void setPrescDate(Date prescDate) {
+        this.prescDate = prescDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public HealthCardID getHcID() {
+        return hcID;
+    }
+
+    public void setHcID(HealthCardID hcID) {
+        this.hcID = hcID;
+    }
+
+    public DigitalSignature geteSign() {
+        return eSign;
+    }
+
+    public void seteSign(DigitalSignature eSign) {
+        this.eSign = eSign;
+    }
+
+    public int getNumOfInstructions() {
+        return numOfInstructions;
+    }
+
+    public void setNumOfInstructions(int numOfInstructions) {
+        this.numOfInstructions = numOfInstructions;
+    }
+
 }

@@ -5,7 +5,7 @@ public class ProductID {
 
     public ProductID(String code) {
         this.UPC = code;
-    }
+    }//TODO null
 
     public String getUPC() {
         return UPC;

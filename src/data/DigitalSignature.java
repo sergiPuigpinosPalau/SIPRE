@@ -7,7 +7,7 @@ public class DigitalSignature {
 
     public DigitalSignature(byte[] code) {
         this.signature = code;
-    }
+    }//TODO null
 
     public byte[] getSignature() {
         return signature;

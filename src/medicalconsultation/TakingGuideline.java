@@ -4,7 +4,7 @@ import exceptions.IncorrectTakingGuidelinesException;
 
 public class TakingGuideline { // Represents the taking guidelines of a medicine
 
-    private float dayMoment;
+    private float dayMoment;//TODO change
     private float duration;
     private String instructions;
     private Posology posology;

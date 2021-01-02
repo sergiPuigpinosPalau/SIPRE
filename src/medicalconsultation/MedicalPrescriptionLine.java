@@ -14,17 +14,17 @@ public class MedicalPrescriptionLine {
             if (inst.isEmpty())
                 throw new IncorrectTakingGuidelinesException("Invalid instruction's format");
         }
-
+        //Check values and create instance
         try {
             FqUnit freqUnit = FqUnit.valueOf(instruc[5]);
-            this.guideline = new TakingGuideline(Float.parseFloat(instruc[0]), Float.parseFloat(instruc[1]), instruc[2], Float.parseFloat(instruc[3]), Float.parseFloat(instruc[4]), freqUnit);
+            DayMoment dayMoment = DayMoment.valueOf(instruc[0]);
+            this.guideline = new TakingGuideline(dayMoment, Float.parseFloat(instruc[1]), instruc[2], Float.parseFloat(instruc[3]), Float.parseFloat(instruc[4]), freqUnit);
         } catch (IllegalArgumentException ex){
             throw new IncorrectTakingGuidelinesException("Invalid instruction's format");
         }
-        //TODO TEST these can throw IncorrectTakingGuidelinesException
     }
 
-    public void modifyPrescriptionLine(String[] instruc) throws IncorrectTakingGuidelinesException{   //TODO IncorrectTakingGuidelinesException TEST
+    public void modifyPrescriptionLine(String[] instruc) throws IncorrectTakingGuidelinesException{
         guideline.modifyGuideline(instruc);
     }
 

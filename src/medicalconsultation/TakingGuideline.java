@@ -4,12 +4,12 @@ import exceptions.IncorrectTakingGuidelinesException;
 
 public class TakingGuideline { // Represents the taking guidelines of a medicine
 
-    private float dayMoment;//TODO change
+    private DayMoment dayMoment;
     private float duration;
     private String instructions;
     private Posology posology;
 
-    public TakingGuideline(float dayMoment, float duration, String instructions, float dose, float freq, FqUnit freqUnit) {
+    public TakingGuideline(DayMoment dayMoment, float duration, String instructions, float dose, float freq, FqUnit freqUnit) {
         this.dayMoment = dayMoment;
         this.duration = duration;
         this.instructions = instructions;
@@ -18,8 +18,8 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
 
     public void modifyGuideline(String[] instruc) throws IncorrectTakingGuidelinesException{
         try{
-            dayMoment = Float.parseFloat(instruc[0]);
-        } catch (java.lang.NumberFormatException ex){
+            dayMoment = DayMoment.valueOf(instruc[0]);
+        } catch (IllegalArgumentException ex){
             if (!instruc[0].equals(""))
                 throw new IncorrectTakingGuidelinesException("Invalid instruction's format");
         }
@@ -37,11 +37,11 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
         posology.modifyPosology(instruc);
     }
 
-    public float getDayMoment() {
+    public DayMoment getDayMoment() {
         return dayMoment;
     }
 
-    public void setDayMoment(float dayMoment) {
+    public void setDayMoment(DayMoment dayMoment) {
         this.dayMoment = dayMoment;
     }
 

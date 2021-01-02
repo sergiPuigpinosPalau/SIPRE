@@ -1,11 +1,26 @@
 package data;
 
+import exceptions.InvalidUPCFormat;
+
 public class ProductID {
     private final String UPC;
 
-    public ProductID(String code) {
+    public ProductID(String code) throws InvalidUPCFormat {
+        if (code == null)
+            throw new IllegalArgumentException();
+        checkUPCFormat(code);
         this.UPC = code;
-    }//TODO null
+    }
+
+    private void checkUPCFormat(String code) throws InvalidUPCFormat {
+        if (code.length() < 12)
+            throw new InvalidUPCFormat();
+
+        for (char numb:code.toCharArray()) {
+            if (!Character.isDigit(numb))
+                throw new InvalidUPCFormat();
+        }
+    }
 
     public String getUPC() {
         return UPC;

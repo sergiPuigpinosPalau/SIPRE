@@ -4,9 +4,11 @@ import data.DigitalSignature;
 import data.HealthCardID;
 import data.ProductID;
 import exceptions.IncorrectTakingGuidelinesException;
+import exceptions.ProductAlreadyAdded;
 import exceptions.ProductNotInPrescription;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,24 +22,26 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     private Date endDate;
     private HealthCardID hcID; // the healthcard ID of the patient
     private DigitalSignature eSign; // the eSignature of the doctor
-    private List<MedicalPrescriptionLine> prescriptionLines;
+    private final List<MedicalPrescriptionLine> prescriptionLines;
     private int numOfInstructions;
 
-    //TODO ??? // Its components, that is, the set of medical prescription lines
-
-    public MedicalPrescription(int prescCode, Date prescDate, Date endDate, HealthCardID hcID, DigitalSignature eSign) {
-        this.prescCode = prescCode;
-        this.prescDate = prescDate;
-        this.endDate = endDate;
-        this.hcID = hcID;
-        this.eSign = eSign;
+    public MedicalPrescription(HealthCardID hcID) {
+        this.hcID = hcID;               //No need to do any check because HealthCardId already does it
         this.numOfInstructions=6;       //In case they add more instructions
+        this.prescriptionLines = new LinkedList<>();
     }
 
-    public void addLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException {
+    public void addLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException, ProductAlreadyAdded {
         if (instruc.length < numOfInstructions)
             throw new IncorrectTakingGuidelinesException("Missing Information");
-        prescriptionLines.add(new MedicalPrescriptionLine(prodID, instruc));
+        //Check if prescription already has this product
+        try{
+            getPrescriptionLineFromProdID(prodID);
+        }catch (ProductNotInPrescription ex){
+            prescriptionLines.add(new MedicalPrescriptionLine(prodID, instruc));
+            return;
+        }
+        throw new ProductAlreadyAdded();
     }
 
     public void modifyLine(ProductID prodID, String[] instruc) throws ProductNotInPrescription, IncorrectTakingGuidelinesException {

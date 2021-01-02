@@ -6,8 +6,10 @@ public class DigitalSignature {
     private final byte[] signature;
 
     public DigitalSignature(byte[] code) {
+        if (code == null)
+            throw new IllegalArgumentException();
         this.signature = code;
-    }//TODO null
+    }
 
     public byte[] getSignature() {
         return signature;
@@ -31,5 +33,4 @@ public class DigitalSignature {
         return "DigitalSignature{" + "signature='" + Arrays.toString(signature) + '\'' + '}';
     }
 
-    //TODO Potser comprovar algo relacionat amb bytes que pugui fallar?
 }

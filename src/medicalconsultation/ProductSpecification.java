@@ -2,6 +2,7 @@ package medicalconsultation;
 
 import data.ProductID;
 import exceptions.InvalidPriceFormat;
+import exceptions.StringTooLongException;
 
 import java.math.BigDecimal;
 
@@ -9,17 +10,21 @@ public class ProductSpecification {
     private ProductID UPCcode;
     private String description;
     private BigDecimal price;
+    private static int MAX_DESC_SIZE = 2000;        //So text doesn't overflow it's container
 
-    public ProductSpecification(ProductID UPCcode, String description, BigDecimal price) throws InvalidPriceFormat{
+    public ProductSpecification(ProductID UPCcode, String description, BigDecimal price) throws InvalidPriceFormat, StringTooLongException{
+        if (UPCcode==null || description==null || price==null)
+            throw new IllegalArgumentException();
         this.UPCcode = UPCcode;
+        if (description.length() > MAX_DESC_SIZE)
+            throw new StringTooLongException("Description is too long, text shouldn't exceed " + MAX_DESC_SIZE + " characters");
         this.description = description;
-        if (price.scale() > 2 || price.signum() < 0)
-            throw new InvalidPriceFormat();
+        checkPriceFormat(price);
         this.price = price;
     }
 
-    private void checkPriceFormat()throws InvalidPriceFormat {
-        if (price.scale() > 2 || price.signum() < 0)
+    private void checkPriceFormat(BigDecimal inPrice)throws InvalidPriceFormat {
+        if (inPrice.scale() > 2 || inPrice.signum() < 0)
             throw new InvalidPriceFormat();
     }
 
@@ -36,6 +41,8 @@ public class ProductSpecification {
     }
 
     public void setUPCcode(ProductID UPCcode) {
+        if (UPCcode==null)
+            throw new IllegalArgumentException();
         this.UPCcode = UPCcode;
     }
 
@@ -44,6 +51,8 @@ public class ProductSpecification {
     }
 
     public void setDescription(String description) {
+        if (description==null)
+            throw new IllegalArgumentException();
         this.description = description;
     }
 
@@ -52,7 +61,17 @@ public class ProductSpecification {
     }
 
     public void setPrice(BigDecimal price) throws InvalidPriceFormat{
-        checkPriceFormat();
+        if (price==null)
+            throw new IllegalArgumentException();
+        checkPriceFormat(price);
         this.price = price;
+    }
+
+    public static int getMaxDescSize() {
+        return MAX_DESC_SIZE;
+    }
+
+    public static void setMaxDescSize(int maxDescSize) {
+        MAX_DESC_SIZE = maxDescSize;
     }
 }

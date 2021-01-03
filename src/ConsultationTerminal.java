@@ -23,6 +23,8 @@ public class ConsultationTerminal {
     private ScheduledVisitAgenda SVA;
 
     public ConsultationTerminal(DigitalSignature doctorSignature, HealthNationalService HNS, ScheduledVisitAgenda SVA) {
+        if (doctorSignature==null || HNS==null || SVA==null)
+            throw new IllegalArgumentException();
         this.doctorSignature = doctorSignature;
         this.HNS = HNS;//TODO preguntar
         this.SVA = SVA;
@@ -66,7 +68,7 @@ public class ConsultationTerminal {
 
     public void sendePrescription() throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription {
         currentePrescription.seteSign(doctorSignature);
-        HNS.sendePrescription(currentePrescription);
+        this.currentePrescription = HNS.sendePrescription(currentePrescription);
     }
 
     public void printePresc() throws printingException { }
@@ -76,6 +78,8 @@ public class ConsultationTerminal {
     }
 
     public void setHNS(HealthNationalService HNS) {
+        if (HNS==null)
+            throw new IllegalArgumentException();
         this.HNS = HNS;
     }
 
@@ -84,6 +88,8 @@ public class ConsultationTerminal {
     }
 
     public void setSVA(ScheduledVisitAgenda SVA) {
+        if (SVA==null)
+            throw new IllegalArgumentException();
         this.SVA = SVA;
     }
 
@@ -92,9 +98,10 @@ public class ConsultationTerminal {
     }
 
     public void setDoctorSignature(DigitalSignature doctorSignature) {
+        if (doctorSignature==null)
+            throw new IllegalArgumentException();
         this.doctorSignature = doctorSignature;
     }
 
-    // Other methods, apart from the input events
 }
 

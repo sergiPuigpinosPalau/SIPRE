@@ -50,6 +50,5 @@ final public class HealthCardID {
         return "HealthCardID{" + "personal code='" + personalID + '\'' + '}';
     }
 
-    //TODO TEST (constructor le llegue null, código de identificación mal formado)
 }
 

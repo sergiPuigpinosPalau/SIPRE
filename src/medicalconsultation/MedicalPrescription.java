@@ -23,16 +23,18 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     private HealthCardID hcID; // the healthcard ID of the patient
     private DigitalSignature eSign; // the eSignature of the doctor
     private final List<MedicalPrescriptionLine> prescriptionLines;
-    private int numOfInstructions;
+    private static final int NUM_OF_INSTRUCTIONS = 6;    //In case they add more instructions
+                                                         //Constant because if someone edits it, they'll need to change some code to implement these new instructions
 
     public MedicalPrescription(HealthCardID hcID) {
+        if (hcID==null)
+            throw new IllegalArgumentException();
         this.hcID = hcID;               //No need to do any check because HealthCardId already does it
-        this.numOfInstructions=6;       //In case they add more instructions
         this.prescriptionLines = new LinkedList<>();
     }
 
     public void addLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException, ProductAlreadyAdded {
-        if (instruc.length < numOfInstructions)
+        if (instruc.length < NUM_OF_INSTRUCTIONS)
             throw new IncorrectTakingGuidelinesException("Missing Information");
         //Check if prescription already has this product
         try{
@@ -45,7 +47,7 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     public void modifyLine(ProductID prodID, String[] instruc) throws ProductNotInPrescription, IncorrectTakingGuidelinesException {
-        if (instruc.length < numOfInstructions)
+        if (instruc.length < NUM_OF_INSTRUCTIONS)
             throw new IncorrectTakingGuidelinesException("Missing Information");
         getPrescriptionLineFromProdID(prodID).modifyPrescriptionLine(instruc);
     }
@@ -75,6 +77,8 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     public void setPrescDate(Date prescDate) {
+        if (prescDate==null)
+            throw new IllegalArgumentException();
         this.prescDate = prescDate;
     }
 
@@ -83,6 +87,8 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     public void setEndDate(Date endDate) {
+        if (endDate==null)
+            throw new IllegalArgumentException();
         this.endDate = endDate;
     }
 
@@ -91,6 +97,8 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     public void setHcID(HealthCardID hcID) {
+        if (hcID==null)
+            throw new IllegalArgumentException();
         this.hcID = hcID;
     }
 
@@ -99,15 +107,16 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     public void seteSign(DigitalSignature eSign) {
+        if (eSign==null)
+            throw new IllegalArgumentException();
         this.eSign = eSign;
     }
 
-    public int getNumOfInstructions() {
-        return numOfInstructions;
+    public List<MedicalPrescriptionLine> getPrescriptionLines() {
+        return prescriptionLines;
     }
 
-    public void setNumOfInstructions(int numOfInstructions) {
-        this.numOfInstructions = numOfInstructions;
+    public static int getNumOfInstructions() {
+        return NUM_OF_INSTRUCTIONS;
     }
-
 }

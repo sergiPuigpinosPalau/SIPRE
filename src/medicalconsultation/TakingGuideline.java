@@ -10,6 +10,8 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
     private Posology posology;
 
     public TakingGuideline(DayMoment dayMoment, float duration, String instructions, float dose, float freq, FqUnit freqUnit) {
+        if (dayMoment==null || instructions==null || freqUnit==null)
+            throw new IllegalArgumentException();
         this.dayMoment = dayMoment;
         this.duration = duration;
         this.instructions = instructions;
@@ -42,6 +44,8 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
     }
 
     public void setDayMoment(DayMoment dayMoment) {
+        if (dayMoment==null)
+            throw new IllegalArgumentException();
         this.dayMoment = dayMoment;
     }
 
@@ -58,6 +62,8 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
     }
 
     public void setInstructions(String instructions) {
+        if (instructions==null)
+            throw new IllegalArgumentException();
         this.instructions = instructions;
     }
 
@@ -66,6 +72,8 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
     }
 
     public void setPosology(Posology posology) {
+        if (posology==null)
+            throw new IllegalArgumentException();
         this.posology = posology;
     }
 }

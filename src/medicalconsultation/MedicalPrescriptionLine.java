@@ -8,6 +8,8 @@ public class MedicalPrescriptionLine {
     private ProductID productID;
 
     public MedicalPrescriptionLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException{
+        if (prodID==null || instruc==null)
+            throw new IllegalArgumentException();
         this.productID = prodID;
         //Check that is given all values
         for (String inst: instruc) {
@@ -33,6 +35,8 @@ public class MedicalPrescriptionLine {
     }
 
     public void setGuideline(TakingGuideline guideline) {
+        if (guideline==null)
+            throw new IllegalArgumentException();
         this.guideline = guideline;
     }
 
@@ -41,6 +45,8 @@ public class MedicalPrescriptionLine {
     }
 
     public void setProductID(ProductID productID) {
+        if (productID==null)
+            throw new IllegalArgumentException();
         this.productID = productID;
     }
 }

@@ -1,6 +1,6 @@
 package medicalconsultation;
 
-public enum dayMoment {
+public enum DayMoment {
     BEFOREBREAKFAST,
     DURINGBREAKFAST,
     AFTERBREAKFAST,

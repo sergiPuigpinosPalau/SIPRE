@@ -1,0 +1,16 @@
+package medicalconsultation;
+
+public enum DayMoment {
+    BEFOREBREAKFAST,
+    DURINGBREAKFAST,
+    AFTERBREAKFAST,
+    BEFORELUNCH,
+    DURINGLUNCH,
+    AFTERLUNCH,
+    BEFOREDINNER,
+    DURINGDINNER,
+    AFTERDINNER,
+    BEFOEMEALS,
+    DURINGMEALS,
+    AFTERMEALS;
+}

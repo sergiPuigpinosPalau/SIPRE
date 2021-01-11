@@ -25,15 +25,20 @@ public class ProductSpecification {
 
     private void checkPriceFormat(BigDecimal inPrice)throws InvalidPriceFormat {
         if (inPrice.scale() > 2 || inPrice.signum() < 0)
-            throw new InvalidPriceFormat();
+            throw new InvalidPriceFormat("Invalid Price format or value");
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        //if (this == o) return true;
+        //if (o == null || getClass() != o.getClass()) return false;
+        if ( o == null ) return false;
         ProductSpecification productSpecification = (ProductSpecification) o;
-        return UPCcode.equals(productSpecification.UPCcode);
+
+        return (this.getPrice().equals(productSpecification.getPrice()) && this.getDescription().equals(productSpecification.getDescription())
+                && this.getUPCcode().equals(productSpecification.getUPCcode())
+        );
+
     }
 
     public ProductID getUPCcode() {

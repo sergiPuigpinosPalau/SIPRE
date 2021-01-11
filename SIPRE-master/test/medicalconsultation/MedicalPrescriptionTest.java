@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MedicalPrescriptionTest {
 
-    ProductID producto1,producto2 , productoModificat;
+    ProductID producto1,producto2 ;
     String[] instrucio1,instrucio2, instrucioModificat;
     MedicalPrescription prescription;
     List<MedicalPrescriptionLine> respuestaLines;
@@ -20,9 +20,10 @@ class MedicalPrescriptionTest {
     @BeforeEach
     void setUp() throws InvalidUPCFormat, InvalidCIPFormat {
 
+        prescription = new MedicalPrescription(new HealthCardID("BBBBBBBBAR444851805874780033"));
+
         producto1 = new ProductID("123456789123");
         instrucio1 = new String[]{"AFTERDINNER", "12", "Tomar con agua.", "13", "23", "WEEK"};
-        prescription = new MedicalPrescription(new HealthCardID("BBBBBBBBAR444851805874780033"));
 
         //productoModificat = new ProductID("123456789123");
         instrucioModificat = new String[]{"AFTERDINNER", "12", "Cadena", "15", "23", "HOUR"};
@@ -41,7 +42,7 @@ class MedicalPrescriptionTest {
         respuestaLines=prescription.getPrescriptionLines();
 
 
-        //assertEquals("ProductID{UPC='123456789123",respuestaLines.get(0).getProductID());
+        assertEquals(producto1.getUPC(),respuestaLines.get(0).getProductID().getUPC());
         assertEquals(12,respuestaLines.get(0).getGuideline().getDuration());
         assertEquals("Tomar con agua.",respuestaLines.get(0).getGuideline().getInstructions());
         assertEquals(DayMoment.AFTERDINNER,respuestaLines.get(0).getGuideline().getDayMoment());
@@ -62,6 +63,7 @@ class MedicalPrescriptionTest {
         assertThrows(IncorrectTakingGuidelinesException.class, () -> {
             prescription.addLine(producto1,new String[]{"AFTERDINNER", "12", "Tomar con agua.", "13", "23"});
         });
+
     }
 
     @Test
@@ -123,4 +125,6 @@ class MedicalPrescriptionTest {
 
 
     }
+
+    
 }

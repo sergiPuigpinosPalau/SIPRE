@@ -1,5 +1,6 @@
 package medicalconsultation;
 
+import data.DigitalSignature;
 import data.HealthCardID;
 import data.ProductID;
 import exceptions.*;
@@ -126,5 +127,25 @@ class MedicalPrescriptionTest {
 
     }
 
-    
-}
+
+    @Test
+    void addCostant() throws InvalidCIPFormat {
+
+        prescription = new MedicalPrescription(new HealthCardID("BBBBBBBBAR444851805874780037"));
+
+        prescription.setEndDate(new Date(-604075999750L));
+        //System.out.print(prescription.getEndDate().toString());
+        assertEquals("Fri Nov 10 10:06:40 CET 1950",prescription.getEndDate().toString());
+
+        prescription.setEndDate(new Date(-604070999750L));
+        assertEquals("Fri Nov 10 11:30:00 CET 1950",prescription.getEndDate().toString());
+
+        byte[] signatura = "Any String you want".getBytes();
+        prescription.seteSign(new DigitalSignature(signatura));
+        assertEquals(signatura,prescription.geteSign().getSignature());
+
+    }
+
+
+
+    }

@@ -30,7 +30,7 @@ public class ConsultationTerminal {
         this.SVA = SVA;
     }
 
-    public void initRevision() throws HealthCardException, NotValidePrescriptionException, ConnectException {
+    public void initRevision() throws HealthCardException, NotValidePrescriptionException, ConnectException, InvalidCIPFormat {
         HealthCardID currentPatientHealthCardID = SVA.getHealthCardID();
         this.currentePrescription = HNS.getePrescription(currentPatientHealthCardID);
     }
@@ -43,11 +43,11 @@ public class ConsultationTerminal {
             throw new AnyCurrentPrescriptionException();
     }
 
-    public void searchForProducts(String keyWord) throws AnyKeyWordMedicineException, ConnectException {
+    public void searchForProducts(String keyWord) throws AnyKeyWordMedicineException, ConnectException, InvalidPriceFormat, StringTooLongException, InvalidUPCFormat {
         listOfProducts = HNS.getProductsByKW(keyWord);
     }
 
-    public void selectProduct(int option) throws AnyMedicineSearchException, ConnectException {
+    public void selectProduct(int option) throws AnyMedicineSearchException, ConnectException, InvalidPriceFormat, InvalidUPCFormat, StringTooLongException {
         selectedProduct = HNS.getProductSpecific(option);
     }
 

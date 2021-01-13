@@ -1,7 +1,7 @@
 package exceptions;
 
 public class InvalidPriceFormat extends Exception{
-    public InvalidPriceFormat(){
+    public InvalidPriceFormat(String invalid){
         super("Invalid Price format or value");
     }
 }

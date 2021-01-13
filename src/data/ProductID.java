@@ -28,10 +28,12 @@ public class ProductID {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        //if (this == o) return true;
+       // if (o == null || getClass() != o.getClass()) return false;
+        if ( o == null ) return false;
         ProductID prodID = (ProductID) o;
-        return UPC.equals(prodID.UPC);
+
+        return this.getUPC().equals(prodID.getUPC());
     }
 
     @Override

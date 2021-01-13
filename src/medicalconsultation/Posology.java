@@ -9,10 +9,13 @@ public class Posology { // A class that represents the posology of a medicine
     private FqUnit freqUnit;
 
     public Posology(float dose, float freq, FqUnit freqUnit) {
+        if ( freqUnit==null)
+            throw new IllegalArgumentException();
         this.dose = dose;
         this.freq = freq;
         this.freqUnit = freqUnit;
     }
+
 
     public void modifyPosology(String[] instruc) throws IncorrectTakingGuidelinesException {
         try{
@@ -58,6 +61,8 @@ public class Posology { // A class that represents the posology of a medicine
     }
 
     public void setFreqUnit(FqUnit freqUnit) {
+        if ( freqUnit==null)
+            throw new IllegalArgumentException();
         this.freqUnit = freqUnit;
     }
 }

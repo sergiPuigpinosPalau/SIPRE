@@ -10,6 +10,7 @@ public class MedicalPrescriptionLine {
     public MedicalPrescriptionLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException{
         if (prodID==null || instruc==null)
             throw new IllegalArgumentException();
+
         this.productID = prodID;
         //Check that is given all values
         for (String inst: instruc) {

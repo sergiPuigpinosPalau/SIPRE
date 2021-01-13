@@ -11,9 +11,10 @@ import java.util.Date;
 import java.util.List;
 
 
-public class ConsultationTerminal {
+public class ConsultationTerminal  {
     //Implements "Crear línea de prescripción" use case
     //Class responsible of managing input events (controlador fachada)
+
 
     private MedicalPrescription currentePrescription;
     private DigitalSignature doctorSignature;
@@ -21,6 +22,8 @@ public class ConsultationTerminal {
     private ProductSpecification selectedProduct;
     private HealthNationalService HNS; //SNS
     private ScheduledVisitAgenda SVA;
+
+
 
     public ConsultationTerminal(DigitalSignature doctorSignature, HealthNationalService HNS, ScheduledVisitAgenda SVA) {
         if (doctorSignature==null || HNS==null || SVA==null)
@@ -30,7 +33,7 @@ public class ConsultationTerminal {
         this.SVA = SVA;
     }
 
-    public void initRevision() throws HealthCardException, NotValidePrescriptionException, ConnectException {
+    public void initRevision() throws HealthCardException, NotValidePrescriptionException, ConnectException, InvalidCIPFormat {
         HealthCardID currentPatientHealthCardID = SVA.getHealthCardID();
         this.currentePrescription = HNS.getePrescription(currentPatientHealthCardID);
     }
@@ -43,18 +46,24 @@ public class ConsultationTerminal {
             throw new AnyCurrentPrescriptionException();
     }
 
-    public void searchForProducts(String keyWord) throws AnyKeyWordMedicineException, ConnectException {
+    public void searchForProducts(String keyWord) throws AnyKeyWordMedicineException, ConnectException, InvalidPriceFormat, StringTooLongException, InvalidUPCFormat {
         listOfProducts = HNS.getProductsByKW(keyWord);
     }
 
-    public void selectProduct(int option) throws AnyMedicineSearchException, ConnectException {
+    public void selectProduct(int option) throws AnyMedicineSearchException, ConnectException, InvalidPriceFormat, InvalidUPCFormat, StringTooLongException {
         selectedProduct = HNS.getProductSpecific(option);
     }
 
     public void enterMedicineGuidelines(String[] instruc) throws AnySelectedMedicineException, IncorrectTakingGuidelinesException, ProductAlreadyAdded {
-        if (selectedProduct == null || !listOfProducts.contains(selectedProduct))
-            throw new AnySelectedMedicineException();
-        currentePrescription.addLine(selectedProduct.getUPCcode(), instruc);
+        if(listOfProducts != null){
+            if (selectedProduct == null || !listOfProducts.contains(selectedProduct))
+                throw new AnySelectedMedicineException();
+            currentePrescription.addLine(selectedProduct.getUPCcode(), instruc);
+        }else{
+            if (selectedProduct == null )
+                throw new AnySelectedMedicineException();
+            currentePrescription.addLine(selectedProduct.getUPCcode(), instruc);
+        }
     }
 
     public void enterTreatmentEndingDate(Date date) throws IncorrectEndingDateException {
@@ -66,7 +75,7 @@ public class ConsultationTerminal {
         currentePrescription.setPrescDate(currentDate);
     }
 
-    public void sendePrescription() throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription {
+    public void sendePrescription(MedicalPrescription pres) throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription, IncorrectTakingGuidelinesException, ProductAlreadyAdded {
         currentePrescription.seteSign(doctorSignature);
         this.currentePrescription = HNS.sendePrescription(currentePrescription);
     }
@@ -76,6 +85,7 @@ public class ConsultationTerminal {
     public HealthNationalService getHNS() {
         return HNS;
     }
+
 
     public void setHNS(HealthNationalService HNS) {
         if (HNS==null)
@@ -101,6 +111,18 @@ public class ConsultationTerminal {
         if (doctorSignature==null)
             throw new IllegalArgumentException();
         this.doctorSignature = doctorSignature;
+    }
+
+    public MedicalPrescription getCurrentePrescription() {
+        return currentePrescription;
+    }
+
+    public List<ProductSpecification> getListOfProducts() {
+        return listOfProducts;
+    }
+
+    public ProductSpecification getSelectedProduct() {
+        return selectedProduct;
     }
 
 }

@@ -11,9 +11,13 @@ import java.util.Date;
 import java.util.List;
 
 
-public class ConsultationTerminal {
+public class ConsultationTerminal  {
     //Implements "Crear línea de prescripción" use case
     //Class responsible of managing input events (controlador fachada)
+
+    public void setCurrentePrescription(MedicalPrescription currentePrescription) {
+        this.currentePrescription = currentePrescription;
+    }
 
     private MedicalPrescription currentePrescription;
     private DigitalSignature doctorSignature;
@@ -22,11 +26,12 @@ public class ConsultationTerminal {
     private HealthNationalService HNS; //SNS
     private ScheduledVisitAgenda SVA;
 
+
     public ConsultationTerminal(DigitalSignature doctorSignature, HealthNationalService HNS, ScheduledVisitAgenda SVA) {
         if (doctorSignature==null || HNS==null || SVA==null)
             throw new IllegalArgumentException();
         this.doctorSignature = doctorSignature;
-        this.HNS = HNS;//TODO preguntar
+        this.HNS = HNS;
         this.SVA = SVA;
     }
 
@@ -37,10 +42,10 @@ public class ConsultationTerminal {
 
     public void initPrescriptionEdition() throws AnyCurrentPrescriptionException, NotFinishedTreatmentException {
         Date currentDate = new java.util.Date();
-        if (currentePrescription.getEndDate().after(currentDate))
-            throw new NotFinishedTreatmentException();
         if (currentePrescription == null)
             throw new AnyCurrentPrescriptionException();
+        if (currentePrescription.getEndDate().after(currentDate))
+            throw new NotFinishedTreatmentException();
     }
 
     public void searchForProducts(String keyWord) throws AnyKeyWordMedicineException, ConnectException {
@@ -52,14 +57,15 @@ public class ConsultationTerminal {
     }
 
     public void enterMedicineGuidelines(String[] instruc) throws AnySelectedMedicineException, IncorrectTakingGuidelinesException, ProductAlreadyAdded {
-        if (selectedProduct == null || !listOfProducts.contains(selectedProduct))
+        //TODO no cal comprovar listOfProducts != null ja que la funcio selectProduct ja s'encarrega d'aixo
+        if (selectedProduct == null || listOfProducts == null || !listOfProducts.contains(selectedProduct))
             throw new AnySelectedMedicineException();
         currentePrescription.addLine(selectedProduct.getUPCcode(), instruc);
     }
 
     public void enterTreatmentEndingDate(Date date) throws IncorrectEndingDateException {
         Date currentDate = new java.util.Date();
-        Date futureDate = Date.from(currentDate.toInstant().plusSeconds(1576800000));
+        Date futureDate = Date.from(currentDate.toInstant().plusSeconds(946708560));
         if (date.before(currentDate) || date.after(futureDate))
             throw new IncorrectEndingDateException();
         currentePrescription.setEndDate(date);
@@ -76,6 +82,7 @@ public class ConsultationTerminal {
     public HealthNationalService getHNS() {
         return HNS;
     }
+
 
     public void setHNS(HealthNationalService HNS) {
         if (HNS==null)
@@ -101,6 +108,18 @@ public class ConsultationTerminal {
         if (doctorSignature==null)
             throw new IllegalArgumentException();
         this.doctorSignature = doctorSignature;
+    }
+
+    public MedicalPrescription getCurrentePrescription() {
+        return currentePrescription;
+    }
+
+    public List<ProductSpecification> getListOfProducts() {
+        return listOfProducts;
+    }
+
+    public ProductSpecification getSelectedProduct() {
+        return selectedProduct;
     }
 
 }

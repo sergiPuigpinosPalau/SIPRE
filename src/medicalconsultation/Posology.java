@@ -2,6 +2,8 @@ package medicalconsultation;
 
 import exceptions.IncorrectTakingGuidelinesException;
 
+import java.util.Objects;
+
 public class Posology { // A class that represents the posology of a medicine
 
     private float dose;

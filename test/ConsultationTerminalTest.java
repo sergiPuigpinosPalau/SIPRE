@@ -97,12 +97,6 @@ class ConsultationTerminalTest {
         assertEquals(13,terminal.getCurrentePrescription().getPrescriptionLines().get(0).getGuideline().getPosology().getDose());
         assertEquals(23,terminal.getCurrentePrescription().getPrescriptionLines().get(0).getGuideline().getPosology().getFreq());
         assertEquals(FqUnit.WEEK,terminal.getCurrentePrescription().getPrescriptionLines().get(0).getGuideline().getPosology().getFreqUnit());
-        //Case where you add a product which was already added
-        terminal.selectProduct(0);
-        assertThrows(ProductAlreadyAdded.class, () -> {
-            String[] instrucioRepetida = new String[]{"AFTERDINNER", "12.5f", "Tomar con agua.", "13", "23", "WEEK"};
-            terminal.enterMedicineGuidelines(instrucioRepetida);
-        });
         //Check it has the correct amount of prescriptions lines as you added
         terminal.selectProduct(1);
         String[] instrucio2 = new String[]{"AFTERDINNER", "12", "Tomar antes de comer. ", "13", "23", "WEEK"};

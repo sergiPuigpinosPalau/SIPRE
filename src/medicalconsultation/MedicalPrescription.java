@@ -35,7 +35,7 @@ public class MedicalPrescription {// A class that represents medical prescriptio
 
     public void addLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException, ProductAlreadyAdded {
         //TODO no calen ja que si es passa null, a l'hora d'executar saltaran alguna de les altres excepciosn, nomes cal aixo als setters/getters
-        if (instruc.length < NUM_OF_INSTRUCTIONS)
+        if (prodID == null || instruc == null || instruc.length < NUM_OF_INSTRUCTIONS)
             throw new IncorrectTakingGuidelinesException("Missing Information");
         //Check if prescription already has this product
         try{
@@ -48,7 +48,7 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     public void modifyLine(ProductID prodID, String[] instruc) throws ProductNotInPrescription, IncorrectTakingGuidelinesException {
-        if (instruc.length < NUM_OF_INSTRUCTIONS)
+        if (prodID == null || instruc == null || instruc.length < NUM_OF_INSTRUCTIONS)
             throw new IncorrectTakingGuidelinesException("Missing Information");
         getPrescriptionLineFromProdID(prodID).modifyPrescriptionLine(instruc);
     }

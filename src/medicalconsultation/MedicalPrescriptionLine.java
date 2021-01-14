@@ -10,8 +10,8 @@ public class MedicalPrescriptionLine {
     public MedicalPrescriptionLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException{
         if (prodID==null || instruc==null)
             throw new IllegalArgumentException();
-
         this.productID = prodID;
+        checkInstructionsLength(instruc);
         //Check that is given all values
         for (String inst: instruc) {
             if (inst.isEmpty())
@@ -28,7 +28,13 @@ public class MedicalPrescriptionLine {
     }
 
     public void modifyPrescriptionLine(String[] instruc) throws IncorrectTakingGuidelinesException{
+        checkInstructionsLength(instruc);
         guideline.modifyGuideline(instruc);
+    }
+
+    private void checkInstructionsLength(String[] instruc) throws IncorrectTakingGuidelinesException{
+        if (instruc.length < MedicalPrescription.getNumOfInstructions())
+            throw new IncorrectTakingGuidelinesException("Missing instructions");
     }
 
     public TakingGuideline getGuideline() {

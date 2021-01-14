@@ -28,14 +28,10 @@ class PosologyTest {
     @Test
     @DisplayName("Povar que el objete no es crea null i es crei corectamen sese cap  Exception.")
     void createPosology() {
-        Posology p2 = new Posology(24,24, hora);
-        assertNotNull(p2);
-
+        new Posology(24,24, hora);
         assertThrows(IllegalArgumentException.class, () -> {
-            FqUnit fqUnitNULL =null;
-            Posology pautaAmbNUL = new Posology(24,24,fqUnitNULL );
-           });
-
+            new Posology(24,24, null);
+        });
     }
 
     @Test
@@ -58,42 +54,41 @@ class PosologyTest {
         assertEquals(10,p.getFreq());
         p.setFreqUnit(day);
         assertEquals(day,p.getFreqUnit());
-
         assertThrows(IllegalArgumentException.class, () -> {
             p.setFreqUnit(arrgNull);
         });
-
     }
 
     @Test
     @DisplayName("Povar que es pot modifica un Posology amb la funcio moifiy corectamen.")
     void modifyPosology() throws IncorrectTakingGuidelinesException {
         Posology p = new Posology(24,24, hora);
-
         p.modifyPosology(instrucio);
         assertEquals(Float.valueOf(instrucio[3]),p.getDose());
         assertEquals(Float.valueOf(instrucio[4]),p.getFreq());
         assertEquals(FqUnit.valueOf(instrucio[5]),p.getFreqUnit());
-
     }
+
+    @Test
+    @DisplayName("Povar que es pot modifica un Posology amb la funcio moifiy corectamen.")
+    void modifyPosologyEmptyArgum() throws IncorrectTakingGuidelinesException {
+        Posology p = new Posology(24,24, hora);
+        p.modifyPosology(instrucio);
+        p.modifyPosology(new String[]{"", "", "", "", "", ""});
+        assertEquals(Float.valueOf(instrucio[3]),p.getDose());
+        assertEquals(Float.valueOf(instrucio[4]),p.getFreq());
+        assertEquals(FqUnit.valueOf(instrucio[5]),p.getFreqUnit());
+    }
+
     @Test
     @DisplayName("Povar que modifyPosology retorna les exepcionts.")
-    void modifyExceptionPosology() throws IncorrectTakingGuidelinesException {
+    void modifyExceptionPosology() {
         Posology p = new Posology(24,24, hora);
-
-
-        assertThrows(NumberFormatException.class, () -> {
+        assertThrows(IncorrectTakingGuidelinesException.class, () -> {
             p.modifyPosology(instrucioNoValida1);
         });
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IncorrectTakingGuidelinesException.class, () -> {
             p.modifyPosology(instrucioNoValida2);
         });
-        assertThrows(IncorrectTakingGuidelinesException.class, () -> {
-            p.modifyPosology(instrucioNoValida3);
-        });
-
-
     }
-
-
 }

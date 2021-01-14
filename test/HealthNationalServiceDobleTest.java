@@ -8,87 +8,79 @@ import services.HealthNationalService;
 
 import java.math.BigDecimal;
 import java.net.ConnectException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class HealthNationalServiceDobleTest implements HealthNationalService {
 
-    List<ProductSpecification> catalogo = new ArrayList<>();
+    List<ProductSpecification> catalogueDatabase;
+    List<ProductSpecification> listOfSelectedProducts;
+    Map<HealthCardID,List<MedicalPrescription>> database;
+
+    public HealthNationalServiceDobleTest() throws InvalidUPCFormat, InvalidPriceFormat, StringTooLongException, InvalidCIPFormat {
+        catalogueDatabase = new LinkedList<>();
+        listOfSelectedProducts = new LinkedList<>();
+        database = new HashMap<>();
+        HealthCardID id = new HealthCardID("BBBBBBBBAR444851805874780037");
+        database.put(id, new LinkedList<>());
+        database.get(id).add(new MedicalPrescription(id));
+        //Eyes
+        catalogueDatabase.add(new ProductSpecification(new ProductID("123456789126"), "natural clinical technologies that treat all problems related to eyes...", new BigDecimal("24.5")));
+        //lungs
+        catalogueDatabase.add(new ProductSpecification(new ProductID("123456789123"), "natural clinical technologies that treat all problems related to lungs...", new BigDecimal("44.5")));
+        catalogueDatabase.add(new ProductSpecification(new ProductID("123456789124"), "Device which helps user to breath and helps with lung related problems...", new BigDecimal("39.99")));
+        catalogueDatabase.add(new ProductSpecification(new ProductID("123456789125"), "Pills to treat lung problems...", new BigDecimal("34.99")));
+        //Hearth
+        catalogueDatabase.add(new ProductSpecification(new ProductID("123456789121"), "natural clinical technologies that treat all problems related to hearth diseases...", new BigDecimal("59.99")));
+        catalogueDatabase.add(new ProductSpecification(new ProductID("123456789122"), "Device to monitor your hearth...", new BigDecimal("59.99")));
+    }
 
     @Override
     public MedicalPrescription getePrescription(HealthCardID hcID) throws HealthCardException, NotValidePrescriptionException, ConnectException {
+        List<MedicalPrescription> list;
+        if ((list=database.get(hcID)) == null)
+            throw new HealthCardException();
 
-        MedicalPrescription prescripco = new MedicalPrescription(hcID);
+        if (list.isEmpty())
+            throw new NotValidePrescriptionException();
 
-        return prescripco ;
-    }
+        return list.get(list.size()-1);
+    }//TODO ignora, soc estupid
 
     @Override
-    public List<ProductSpecification> getProductsByKW(String keyWord) throws AnyKeyWordMedicineException, ConnectException, InvalidUPCFormat, InvalidPriceFormat, StringTooLongException {
+    public List<ProductSpecification> getProductsByKW(String keyWord) throws AnyKeyWordMedicineException, ConnectException {
 
-        if(catalogo.size()>0){
-            for(int i=(catalogo.size()-1); i>=0;i--){
-                catalogo.remove(i);
-            }
+        List<ProductSpecification> catalogueRtn = new LinkedList<>();
 
+        for (ProductSpecification product : catalogueDatabase) {
+            if (product.getDescription().toLowerCase().contains(keyWord.toLowerCase()) || product.getDescription().toLowerCase().contains(keyWord.toLowerCase().substring(0,keyWord.length()-2))) //TODO plural?
+                catalogueRtn.add(product);
         }
 
-            switch (keyWord) {
-                case "ojos":
-                    catalogo.add(new ProductSpecification(new ProductID("123456789126"),"tecnologías clínicas naturales que tratan todos los signos .", new BigDecimal("24.5")));
-                    return catalogo;
-                case "pulmones":
-                    catalogo.add(new ProductSpecification(new ProductID("123456789123"),"tecnologías clínicas naturales que tratan todos los signos .", new BigDecimal("44.5")));
-                    catalogo.add(new ProductSpecification(new ProductID("123456789124"),"Tu presión sistólica está por debajo de 90 milímetros de mercurio (mm Hg) o tu presión diastólica es de 60 mm Hg o menor . .", new BigDecimal("39.99")));
-                    catalogo.add(new ProductSpecification(new ProductID("123456789125"),"tecnologías clínicas naturales . .", new BigDecimal("34.99")));
+        if (catalogueRtn.isEmpty())
+            throw new AnyKeyWordMedicineException();
 
-                    return catalogo;
-                case "cor":
-                    catalogo.add(new ProductSpecification(new ProductID("123456789121"),"tecnologías clínicas naturales . .", new BigDecimal("59.99")));
-                    catalogo.add(new ProductSpecification(new ProductID("123456789122"),"tecnologías clínicas naturales . .", new BigDecimal("59.99")));
-                    return catalogo;
-                default:
-                    throw new AnyKeyWordMedicineException();
-            }
-
-
-
+        this.listOfSelectedProducts = catalogueRtn;
+        return catalogueRtn;
     }
 
     @Override
-    public ProductSpecification getProductSpecific(int opt) throws AnyMedicineSearchException, ConnectException, InvalidPriceFormat, StringTooLongException, InvalidUPCFormat {
-
-            if(catalogo.size()>0 && catalogo.size()>opt ) {
-                return catalogo.get(opt);
-            }else{
-                throw new AnyMedicineSearchException();
-            }
+    public ProductSpecification getProductSpecific(int opt) throws AnyMedicineSearchException, ConnectException {
+        if (!listOfSelectedProducts.isEmpty() && listOfSelectedProducts.size() > opt) {
+            return listOfSelectedProducts.get(opt);
+        } else {
+            throw new AnyMedicineSearchException();
+        }
     }
 
+    //TODO no pots modificar els throws de l-implementacio per ajustar els testos, si acas els testos s'han d'adaptar
+
     @Override
-    public MedicalPrescription sendePrescription(MedicalPrescription ePresc) throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription, IncorrectTakingGuidelinesException, ProductAlreadyAdded {
-
-
-            MedicalPrescription ePrescCopia = new MedicalPrescription(ePresc.getHcID());
-            ePrescCopia.seteSign(ePresc.geteSign());
-            ePrescCopia.setEndDate(ePresc.getEndDate());
-            ePrescCopia.setPrescDate(ePresc.getPrescDate());
-            ePrescCopia.setPrescCode(ePresc.getPrescCode());
-
-            for(int i=0; i< ePresc.getPrescriptionLines().size(); i++ ) {
-                String[] instrucio = new String[6];
-                instrucio[0]=ePresc.getPrescriptionLines().get(i).getGuideline().getDayMoment().toString();
-                instrucio[1]=ePresc.getPrescriptionLines().get(i).getGuideline().getDuration()+"";
-                instrucio[2]= ePresc.getPrescriptionLines().get(i).getGuideline().getInstructions();
-                instrucio[3]= ePresc.getPrescriptionLines().get(i).getGuideline().getPosology().getDose()+"";
-                instrucio[4]=ePresc.getPrescriptionLines().get(i).getGuideline().getPosology().getFreq()+"";
-                instrucio[5]=ePresc.getPrescriptionLines().get(i).getGuideline().getPosology().getFreqUnit().toString();
-                ePrescCopia.addLine(ePresc.getPrescriptionLines().get(i).getProductID(), instrucio);
-            }
-
-            return ePrescCopia;
-
-
+    public MedicalPrescription sendePrescription(MedicalPrescription ePresc) throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription {
+        //TODO retorna la mateixa prescripcio per amb un nou codi generat ja que l-unic que fa es guardar la epresc i donarli un nou codi
+        ePresc.setPrescCode(123465798); //TODO random
+        return ePresc;
     }
 }

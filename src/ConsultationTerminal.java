@@ -15,6 +15,9 @@ public class ConsultationTerminal  {
     //Implements "Crear línea de prescripción" use case
     //Class responsible of managing input events (controlador fachada)
 
+    public void setCurrentePrescription(MedicalPrescription currentePrescription) {
+        this.currentePrescription = currentePrescription;
+    }
 
     private MedicalPrescription currentePrescription;
     private DigitalSignature doctorSignature;
@@ -24,58 +27,52 @@ public class ConsultationTerminal  {
     private ScheduledVisitAgenda SVA;
 
 
-
     public ConsultationTerminal(DigitalSignature doctorSignature, HealthNationalService HNS, ScheduledVisitAgenda SVA) {
         if (doctorSignature==null || HNS==null || SVA==null)
             throw new IllegalArgumentException();
         this.doctorSignature = doctorSignature;
-        this.HNS = HNS;//TODO preguntar
+        this.HNS = HNS;
         this.SVA = SVA;
     }
 
-    public void initRevision() throws HealthCardException, NotValidePrescriptionException, ConnectException, InvalidCIPFormat {
+    public void initRevision() throws HealthCardException, NotValidePrescriptionException, ConnectException {
         HealthCardID currentPatientHealthCardID = SVA.getHealthCardID();
         this.currentePrescription = HNS.getePrescription(currentPatientHealthCardID);
     }
 
     public void initPrescriptionEdition() throws AnyCurrentPrescriptionException, NotFinishedTreatmentException {
         Date currentDate = new java.util.Date();
-        if (currentePrescription.getEndDate().after(currentDate))
-            throw new NotFinishedTreatmentException();
         if (currentePrescription == null)
             throw new AnyCurrentPrescriptionException();
+        if (currentePrescription.getEndDate().after(currentDate))
+            throw new NotFinishedTreatmentException();
     }
 
-    public void searchForProducts(String keyWord) throws AnyKeyWordMedicineException, ConnectException, InvalidPriceFormat, StringTooLongException, InvalidUPCFormat {
+    public void searchForProducts(String keyWord) throws AnyKeyWordMedicineException, ConnectException {
         listOfProducts = HNS.getProductsByKW(keyWord);
     }
 
-    public void selectProduct(int option) throws AnyMedicineSearchException, ConnectException, InvalidPriceFormat, InvalidUPCFormat, StringTooLongException {
+    public void selectProduct(int option) throws AnyMedicineSearchException, ConnectException {
         selectedProduct = HNS.getProductSpecific(option);
     }
 
     public void enterMedicineGuidelines(String[] instruc) throws AnySelectedMedicineException, IncorrectTakingGuidelinesException, ProductAlreadyAdded {
-        if(listOfProducts != null){
-            if (selectedProduct == null || !listOfProducts.contains(selectedProduct))
-                throw new AnySelectedMedicineException();
-            currentePrescription.addLine(selectedProduct.getUPCcode(), instruc);
-        }else{
-            if (selectedProduct == null )
-                throw new AnySelectedMedicineException();
-            currentePrescription.addLine(selectedProduct.getUPCcode(), instruc);
-        }
+        //TODO no cal comprovar listOfProducts != null ja que la funcio selectProduct ja s'encarrega d'aixo
+        if (selectedProduct == null || listOfProducts == null || !listOfProducts.contains(selectedProduct))
+            throw new AnySelectedMedicineException();
+        currentePrescription.addLine(selectedProduct.getUPCcode(), instruc);
     }
 
     public void enterTreatmentEndingDate(Date date) throws IncorrectEndingDateException {
         Date currentDate = new java.util.Date();
-        Date futureDate = Date.from(currentDate.toInstant().plusSeconds(1576800000));
+        Date futureDate = Date.from(currentDate.toInstant().plusSeconds(946708560));
         if (date.before(currentDate) || date.after(futureDate))
             throw new IncorrectEndingDateException();
         currentePrescription.setEndDate(date);
         currentePrescription.setPrescDate(currentDate);
     }
 
-    public void sendePrescription(MedicalPrescription pres) throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription, IncorrectTakingGuidelinesException, ProductAlreadyAdded {
+    public void sendePrescription() throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription {
         currentePrescription.seteSign(doctorSignature);
         this.currentePrescription = HNS.sendePrescription(currentePrescription);
     }

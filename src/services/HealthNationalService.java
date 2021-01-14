@@ -16,10 +16,10 @@ public interface HealthNationalService {
 
     MedicalPrescription getePrescription(HealthCardID hcID) throws HealthCardException, NotValidePrescriptionException, ConnectException;
 
-    List<ProductSpecification> getProductsByKW(String keyWord) throws AnyKeyWordMedicineException, ConnectException, InvalidUPCFormat, InvalidPriceFormat, StringTooLongException;
+    List<ProductSpecification> getProductsByKW(String keyWord) throws AnyKeyWordMedicineException, ConnectException;
 
-    ProductSpecification getProductSpecific(int opt) throws AnyMedicineSearchException, ConnectException, InvalidPriceFormat, StringTooLongException, InvalidUPCFormat;
+    ProductSpecification getProductSpecific(int opt) throws AnyMedicineSearchException, ConnectException;
 
-    MedicalPrescription sendePrescription(MedicalPrescription ePresc) throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription, IncorrectTakingGuidelinesException, ProductAlreadyAdded;
+    MedicalPrescription sendePrescription(MedicalPrescription ePresc) throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription;
 
 }

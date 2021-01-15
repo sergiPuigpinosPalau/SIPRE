@@ -8,10 +8,7 @@ import services.HealthNationalService;
 
 import java.math.BigDecimal;
 import java.net.ConnectException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HealthNationalServiceDobleTest implements HealthNationalService {
 
@@ -75,12 +72,9 @@ public class HealthNationalServiceDobleTest implements HealthNationalService {
         }
     }
 
-    //TODO no pots modificar els throws de l-implementacio per ajustar els testos, si acas els testos s'han d'adaptar
-
     @Override
     public MedicalPrescription sendePrescription(MedicalPrescription ePresc) throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription {
-        //TODO retorna la mateixa prescripcio per amb un nou codi generat ja que l-unic que fa es guardar la epresc i donarli un nou codi
-        ePresc.setPrescCode(123465798); //TODO random
+        ePresc.setPrescCode(new Random().nextInt(999999));
         return ePresc;
     }
 }

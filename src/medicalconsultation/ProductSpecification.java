@@ -34,8 +34,6 @@ public class ProductSpecification {
         if (o == null || getClass() != o.getClass()) return false;
         ProductSpecification productSpecification = (ProductSpecification) o;
         return UPCcode.equals(productSpecification.UPCcode) && description.equals(productSpecification.description) && price.equals(productSpecification.price);
-        //TODO mirar altres
-        //TODO nse que havies fet, pero mas recordar que sa de comparar tots els valors
     }
 
     public ProductID getUPCcode() {

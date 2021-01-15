@@ -10,6 +10,7 @@ import exceptions.ProductNotInPrescription;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Package for the classes involved in the use case Suply next dispensing
@@ -119,5 +120,18 @@ public class MedicalPrescription {// A class that represents medical prescriptio
 
     public static int getNumOfInstructions() {
         return NUM_OF_INSTRUCTIONS;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MedicalPrescription that = (MedicalPrescription) o;
+        return prescCode == that.prescCode && Objects.equals(prescDate, that.prescDate) && Objects.equals(endDate, that.endDate) && Objects.equals(hcID, that.hcID) && Objects.equals(eSign, that.eSign) && Objects.equals(prescriptionLines, that.prescriptionLines);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(prescCode, prescDate, endDate, hcID, eSign, prescriptionLines);
     }
 }

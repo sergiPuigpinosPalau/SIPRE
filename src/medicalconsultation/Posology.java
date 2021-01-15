@@ -18,7 +18,6 @@ public class Posology { // A class that represents the posology of a medicine
         this.freqUnit = freqUnit;
     }
 
-
     public void modifyPosology(String[] instruc) throws IncorrectTakingGuidelinesException {
         try{
             dose = Float.parseFloat(instruc[3]);
@@ -66,5 +65,18 @@ public class Posology { // A class that represents the posology of a medicine
         if (freqUnit==null)
             throw new IllegalArgumentException();
         this.freqUnit = freqUnit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Posology posology = (Posology) o;
+        return Float.compare(posology.dose, dose) == 0 && Float.compare(posology.freq, freq) == 0 && freqUnit == posology.freqUnit;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dose, freq, freqUnit);
     }
 }

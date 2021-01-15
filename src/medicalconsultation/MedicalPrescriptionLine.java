@@ -3,6 +3,8 @@ package medicalconsultation;
 import data.ProductID;
 import exceptions.IncorrectTakingGuidelinesException;
 
+import java.util.Objects;
+
 public class MedicalPrescriptionLine {
     private TakingGuideline guideline;
     private ProductID productID;
@@ -55,5 +57,18 @@ public class MedicalPrescriptionLine {
         if (productID==null)
             throw new IllegalArgumentException();
         this.productID = productID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MedicalPrescriptionLine that = (MedicalPrescriptionLine) o;
+        return Objects.equals(guideline, that.guideline) && Objects.equals(productID, that.productID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(guideline, productID);
     }
 }

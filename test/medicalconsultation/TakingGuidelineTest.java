@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -14,6 +13,7 @@ class TakingGuidelineTest {
 
     Posology posologia , posologiaFalse, posologiaSet;
     String[] instrucio,instrucioNoValida1,instrucioNoValida2;
+
     @BeforeEach
     void setUp() {
         posologia = new Posology(24,24,FqUnit.DAY);
@@ -25,34 +25,26 @@ class TakingGuidelineTest {
     }
 
     @Test
-    @DisplayName("Povar que el objete no es crea null i es crei corectamen sese cap  Exception.")
+    @DisplayName("Check that the taking guideline gets created without any errors")
     void createTakingGuideline() {
         new TakingGuideline(DayMoment.AFTERDINNER,24, "Tomar con agua.",12,12.2f, FqUnit.DAY);
-        assertThrows(IllegalArgumentException.class, () -> {
-            new TakingGuideline(null,24,null,23, 21,null);
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            new TakingGuideline(null,24,"String.",23, 21,FqUnit.DAY);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new TakingGuideline(null,24,null,23, 21,null));
+        assertThrows(IllegalArgumentException.class, () -> new TakingGuideline(null,24,"String.",23, 21,FqUnit.DAY));
     }
 
     @Test
-    @DisplayName("Povar que es pot acedir al contigut corectamen.")
+    @DisplayName("Check information stored matches")
     void getTakingGuideline() {
         TakingGuideline pauta = new TakingGuideline(DayMoment.AFTERBREAKFAST,12.5f,"Toma el medicamento exactamente como te lo hayan recetado.",24,24,FqUnit.DAY);
         assertEquals(DayMoment.AFTERBREAKFAST,pauta.getDayMoment());
         assertEquals(12.5f,pauta.getDuration());
         assertEquals("Toma el medicamento exactamente como te lo hayan recetado.",pauta.getInstructions());
-        assertEquals(posologia.getFreqUnit(),pauta.getPosology().getFreqUnit());
-        assertEquals(posologia.getFreq(),pauta.getPosology().getFreq());
-        assertEquals(posologia.getDose(),pauta.getPosology().getDose());
-        assertNotEquals(posologiaFalse.getFreqUnit(),pauta.getPosology().getFreqUnit());
-        assertNotEquals(posologiaFalse.getFreq(),pauta.getPosology().getFreq());
-        assertNotEquals(posologiaFalse.getDose(),pauta.getPosology().getDose());
+        assertEquals(posologia,pauta.getPosology());
+        assertNotEquals(posologiaFalse,pauta.getPosology());
     }
 
     @Test
-    @DisplayName("Povar la funcio set().")
+    @DisplayName("Check setters")
     void setTakingGuideline() {
         TakingGuideline pauta = new TakingGuideline(DayMoment.AFTERBREAKFAST,12.5f,"Toma el medicamento exactamente como te lo hayan recetado.",24,24,FqUnit.DAY);
         pauta.setDayMoment(DayMoment.DURINGBREAKFAST);
@@ -62,13 +54,11 @@ class TakingGuidelineTest {
         pauta.setInstructions("String.");
         assertEquals("String.",pauta.getInstructions());
         pauta.setPosology(posologiaSet);
-        assertEquals(posologiaSet.getFreqUnit(),pauta.getPosology().getFreqUnit());
-        assertEquals(posologiaSet.getFreq(),pauta.getPosology().getFreq());
-        assertEquals(posologiaSet.getDose(),pauta.getPosology().getDose());
+        assertEquals(posologiaSet,pauta.getPosology());
     }
 
     @Test
-    @DisplayName("Povar que es pot modifica un Posology amb la funcio moifiy corectamen.")
+    @DisplayName("Check modify function")
     void modifyPosology() throws IncorrectTakingGuidelinesException {
         TakingGuideline pauta = new TakingGuideline(DayMoment.AFTERBREAKFAST,12.5f,"Toma el medicamento exactamente como te lo hayan recetado.",24,24,FqUnit.DAY);
         pauta.modifyGuideline(instrucio);
@@ -77,30 +67,23 @@ class TakingGuidelineTest {
         assertEquals(instrucio[2],pauta.getInstructions());
     }
 
+    //TODO modify with empty
+
     @Test
     @DisplayName("Povar que modifyPosology retorna les exepcionts.")
     void modifyExceptionPosology() {
         TakingGuideline pauta = new TakingGuideline(DayMoment.AFTERBREAKFAST,12.5f,"Toma el medicamento exactamente como te lo hayan recetado.",24,24,FqUnit.DAY);
-        assertThrows(IncorrectTakingGuidelinesException.class, () -> {
-            pauta.modifyGuideline(instrucioNoValida1);
-        });
-        assertThrows(IncorrectTakingGuidelinesException.class, () -> {
-            pauta.modifyGuideline(instrucioNoValida2);
-        });
+        assertThrows(IncorrectTakingGuidelinesException.class, () -> pauta.modifyGuideline(instrucioNoValida1));
+        assertThrows(IncorrectTakingGuidelinesException.class, () -> pauta.modifyGuideline(instrucioNoValida2));
     }
 
     @Test
     void testSetters() {
         TakingGuideline pauta = new TakingGuideline(DayMoment.AFTERBREAKFAST,12.5f,"Toma el medicamento exactamente como te lo hayan recetado.",24,24,FqUnit.DAY);
-        assertThrows(IllegalArgumentException.class, () -> {
-            pauta.setPosology(null);
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            pauta.setInstructions(null);
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            pauta.setDayMoment(null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> pauta.setPosology(null));
+        assertThrows(IllegalArgumentException.class, () -> pauta.setInstructions(null));
+        assertThrows(IllegalArgumentException.class, () -> pauta.setDayMoment(null));
     }
 
+    //TODO equals
 }

@@ -2,6 +2,8 @@ package medicalconsultation;
 
 import exceptions.IncorrectTakingGuidelinesException;
 
+import java.util.Objects;
+
 public class TakingGuideline { // Represents the taking guidelines of a medicine
 
     private DayMoment dayMoment;
@@ -75,5 +77,18 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
         if (posology==null)
             throw new IllegalArgumentException();
         this.posology = posology;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TakingGuideline that = (TakingGuideline) o;
+        return Float.compare(that.duration, duration) == 0 && dayMoment == that.dayMoment && Objects.equals(instructions, that.instructions) && Objects.equals(posology, that.posology);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dayMoment, duration, instructions, posology);
     }
 }

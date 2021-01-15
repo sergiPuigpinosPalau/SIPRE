@@ -1,17 +1,14 @@
 package data;
 
 
-import data.testInterfaces.EmptyInterfaceHealthCardIDTest;
 import exceptions.InvalidCIPFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class HealthCardIDTest implements EmptyInterfaceHealthCardIDTest {
+public class HealthCardIDTest {
 
     HealthCardID healthCardID;
     String healthID;
@@ -21,19 +18,31 @@ public class HealthCardIDTest implements EmptyInterfaceHealthCardIDTest {
         healthCardID = new HealthCardID("BBBBBBBBAR444851805874780033");
     }
 
-
     @Test
-    @Override
-    public void EmptyHealthCardIDTest() throws InvalidCIPFormat {
-
+    public void equalsTest() {
         healthID= "BBBBBBBBAR444851805874780033";
         assertEquals(healthID, this.healthCardID.getPersonalID());
+    }
+
+    @Test
+    public void invalidCodeTest() {
         assertThrows(InvalidCIPFormat.class, () -> {
             new HealthCardID("BBBBBBBBAR123456789144");
         });
         assertThrows(InvalidCIPFormat.class, () -> {
+            new HealthCardID("AAAAABBBAR123456789144");
+        });
+        assertThrows(InvalidCIPFormat.class, () -> {
+            new HealthCardID("5698732158123456789144");
+        });
+        assertThrows(InvalidCIPFormat.class, () -> {
+            new HealthCardID("AAAAAAAAAAAAAAAAAAAAAA");
+        });
+        assertThrows(InvalidCIPFormat.class, () -> {
+            new HealthCardID("BBBBBBBBAR123456789144BBBBBBBBAR123456789144BBBBBBBBAR123456789144");
+        });
+        assertThrows(InvalidCIPFormat.class, () -> {
             new HealthCardID("");
         });
-
     }
 }

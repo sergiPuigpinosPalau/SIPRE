@@ -18,30 +18,33 @@ import java.util.Objects;
 
 public class MedicalPrescription {// A class that represents medical prescription
 
+    private static final int NUM_OF_INSTRUCTIONS = 6;    //In case they add more instructions
+    private final List<MedicalPrescriptionLine> prescriptionLines;
     private int prescCode;
     private Date prescDate;
     private Date endDate;
     private HealthCardID hcID; // the healthcard ID of the patient
     private DigitalSignature eSign; // the eSignature of the doctor
-    private final List<MedicalPrescriptionLine> prescriptionLines;
-    private static final int NUM_OF_INSTRUCTIONS = 6;    //In case they add more instructions
-                                                         //Constant because if someone edits it, they'll need to change some code to implement these new instructions
+    //Constant because if someone edits it, they'll need to change some code to implement these new instructions
 
     public MedicalPrescription(HealthCardID hcID) {
-        if (hcID==null)
+        if (hcID == null)
             throw new IllegalArgumentException();
         this.hcID = hcID;               //No need to do any check because HealthCardId already does it
         this.prescriptionLines = new LinkedList<>();
     }
 
+    public static int getNumOfInstructions() {
+        return NUM_OF_INSTRUCTIONS;
+    }
+
     public void addLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException, ProductAlreadyAdded {
-        //TODO no calen ja que si es passa null, a l'hora d'executar saltaran alguna de les altres excepciosn, nomes cal aixo als setters/getters
         if (prodID == null || instruc == null || instruc.length < NUM_OF_INSTRUCTIONS)
             throw new IncorrectTakingGuidelinesException("Missing Information");
         //Check if prescription already has this product
-        try{
+        try {
             getPrescriptionLineFromProdID(prodID);
-        }catch (ProductNotInPrescription ex){
+        } catch (ProductNotInPrescription ex) {
             prescriptionLines.add(new MedicalPrescriptionLine(prodID, instruc));
             return;
         }
@@ -59,7 +62,7 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     private MedicalPrescriptionLine getPrescriptionLineFromProdID(ProductID prodID) throws ProductNotInPrescription {
-        for (MedicalPrescriptionLine prescriptionLine:prescriptionLines) {
+        for (MedicalPrescriptionLine prescriptionLine : prescriptionLines) {
             if (prescriptionLine.getProductID().equals(prodID))
                 return prescriptionLine;
         }
@@ -79,7 +82,7 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     public void setPrescDate(Date prescDate) {
-        if (prescDate==null)
+        if (prescDate == null)
             throw new IllegalArgumentException();
         this.prescDate = prescDate;
     }
@@ -89,7 +92,7 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     public void setEndDate(Date endDate) {
-        if (endDate==null)
+        if (endDate == null)
             throw new IllegalArgumentException();
         this.endDate = endDate;
     }
@@ -99,7 +102,7 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     public void setHcID(HealthCardID hcID) {
-        if (hcID==null)
+        if (hcID == null)
             throw new IllegalArgumentException();
         this.hcID = hcID;
     }
@@ -109,17 +112,13 @@ public class MedicalPrescription {// A class that represents medical prescriptio
     }
 
     public void seteSign(DigitalSignature eSign) {
-        if (eSign==null)
+        if (eSign == null)
             throw new IllegalArgumentException();
         this.eSign = eSign;
     }
 
     public List<MedicalPrescriptionLine> getPrescriptionLines() {
         return prescriptionLines;
-    }
-
-    public static int getNumOfInstructions() {
-        return NUM_OF_INSTRUCTIONS;
     }
 
     @Override

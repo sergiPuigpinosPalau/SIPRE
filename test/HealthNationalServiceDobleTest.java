@@ -1,4 +1,3 @@
-
 import data.HealthCardID;
 import data.ProductID;
 import exceptions.*;
@@ -14,7 +13,7 @@ public class HealthNationalServiceDobleTest implements HealthNationalService {
 
     List<ProductSpecification> catalogueDatabase;
     List<ProductSpecification> listOfSelectedProducts;
-    Map<HealthCardID,List<MedicalPrescription>> database;
+    Map<HealthCardID, List<MedicalPrescription>> database;
 
     public HealthNationalServiceDobleTest() throws InvalidUPCFormat, InvalidPriceFormat, StringTooLongException, InvalidCIPFormat {
         catalogueDatabase = new LinkedList<>();
@@ -37,14 +36,14 @@ public class HealthNationalServiceDobleTest implements HealthNationalService {
     @Override
     public MedicalPrescription getePrescription(HealthCardID hcID) throws HealthCardException, NotValidePrescriptionException, ConnectException {
         List<MedicalPrescription> list;
-        if ((list=database.get(hcID)) == null)
+        if ((list = database.get(hcID)) == null)
             throw new HealthCardException();
 
         if (list.isEmpty())
             throw new NotValidePrescriptionException();
 
-        return list.get(list.size()-1);
-    }//TODO ignora, soc estupid
+        return list.get(list.size() - 1);
+    }
 
     @Override
     public List<ProductSpecification> getProductsByKW(String keyWord) throws AnyKeyWordMedicineException, ConnectException {
@@ -52,7 +51,7 @@ public class HealthNationalServiceDobleTest implements HealthNationalService {
         List<ProductSpecification> catalogueRtn = new LinkedList<>();
 
         for (ProductSpecification product : catalogueDatabase) {
-            if (product.getDescription().toLowerCase().contains(keyWord.toLowerCase()) || product.getDescription().toLowerCase().contains(keyWord.toLowerCase().substring(0,keyWord.length()-2))) //TODO plural?
+            if (product.getDescription().toLowerCase().contains(keyWord.toLowerCase()) || product.getDescription().toLowerCase().contains(keyWord.toLowerCase().substring(0, keyWord.length() - 2)))
                 catalogueRtn.add(product);
         }
 

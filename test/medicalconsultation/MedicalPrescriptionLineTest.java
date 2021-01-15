@@ -80,7 +80,7 @@ class MedicalPrescriptionLineTest {
     }
 
     @Test
-    @DisplayName("Check modify function with empty arguments")
+    @DisplayName("Check modify function with empty strings")
     void modifyMedicalPrescriptionLineWithEmptyArguments() throws IncorrectTakingGuidelinesException {
         //Case where user doesn't want to change
         instrucio = new String[]{"AFTERDINNER", "12", "Tomar con agua.", "13", "23", "HOUR"};

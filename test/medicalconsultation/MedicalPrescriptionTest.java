@@ -120,7 +120,7 @@ class MedicalPrescriptionTest {
 
     @Test
     @DisplayName("Check equal")
-    public void equalsTest() throws InvalidUPCFormat, InvalidCIPFormat {
+    public void equalsTest() throws InvalidCIPFormat {
         MedicalPrescription mp2 = new MedicalPrescription(new HealthCardID("BBBBBBBBAR444851805874780033"));
         assertEquals(prescription, mp2);
         mp2.setHcID(new HealthCardID("BBBBBBBBAR444851805874785588"));

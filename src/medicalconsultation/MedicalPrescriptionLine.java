@@ -9,13 +9,13 @@ public class MedicalPrescriptionLine {
     private TakingGuideline guideline;
     private ProductID productID;
 
-    public MedicalPrescriptionLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException{
-        if (prodID==null || instruc==null)
+    public MedicalPrescriptionLine(ProductID prodID, String[] instruc) throws IncorrectTakingGuidelinesException {
+        if (prodID == null || instruc == null)
             throw new IllegalArgumentException();
         this.productID = prodID;
         checkInstructionsLength(instruc);
         //Check that is given all values
-        for (String inst: instruc) {
+        for (String inst : instruc) {
             if (inst.isEmpty())
                 throw new IncorrectTakingGuidelinesException("Invalid instruction's format");
         }
@@ -24,17 +24,17 @@ public class MedicalPrescriptionLine {
             FqUnit freqUnit = FqUnit.valueOf(instruc[5]);
             DayMoment dayMoment = DayMoment.valueOf(instruc[0]);
             this.guideline = new TakingGuideline(dayMoment, Float.parseFloat(instruc[1]), instruc[2], Float.parseFloat(instruc[3]), Float.parseFloat(instruc[4]), freqUnit);
-        } catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             throw new IncorrectTakingGuidelinesException("Invalid instruction's format");
         }
     }
 
-    public void modifyPrescriptionLine(String[] instruc) throws IncorrectTakingGuidelinesException{
+    public void modifyPrescriptionLine(String[] instruc) throws IncorrectTakingGuidelinesException {
         checkInstructionsLength(instruc);
         guideline.modifyGuideline(instruc);
     }
 
-    private void checkInstructionsLength(String[] instruc) throws IncorrectTakingGuidelinesException{
+    private void checkInstructionsLength(String[] instruc) throws IncorrectTakingGuidelinesException {
         if (instruc.length < MedicalPrescription.getNumOfInstructions())
             throw new IncorrectTakingGuidelinesException("Missing instructions");
     }
@@ -44,7 +44,7 @@ public class MedicalPrescriptionLine {
     }
 
     public void setGuideline(TakingGuideline guideline) {
-        if (guideline==null)
+        if (guideline == null)
             throw new IllegalArgumentException();
         this.guideline = guideline;
     }
@@ -54,7 +54,7 @@ public class MedicalPrescriptionLine {
     }
 
     public void setProductID(ProductID productID) {
-        if (productID==null)
+        if (productID == null)
             throw new IllegalArgumentException();
         this.productID = productID;
     }

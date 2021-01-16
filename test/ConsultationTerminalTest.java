@@ -22,7 +22,7 @@ class ConsultationTerminalTest {
     @BeforeEach
     void setUp() throws InvalidPriceFormat, StringTooLongException, InvalidUPCFormat, InvalidCIPFormat {
         signatura = "Doctor Carlos".getBytes();
-        terminal = new ConsultationTerminal(new DigitalSignature(signatura), new HealthNationalServiceDobleTest(), new ScheduledVisitAgendaDobleTest());
+        terminal = new ConsultationTerminal(new DigitalSignature(signatura), new HealthNationalServiceDoubleTestImpl(), new ScheduledVisitAgendaDoubleTestImpl());
     }
 
     @Test

@@ -18,14 +18,13 @@ import java.util.Objects;
 
 public class MedicalPrescription {// A class that represents medical prescription
 
-    private static final int NUM_OF_INSTRUCTIONS = 6;    //In case they add more instructions
+    private static final int NUM_OF_INSTRUCTIONS = 6; //Constant because if someone edits it, they'll need to change some code to implement these new instructions
     private final List<MedicalPrescriptionLine> prescriptionLines;
     private int prescCode;
     private Date prescDate;
     private Date endDate;
     private HealthCardID hcID; // the healthcard ID of the patient
     private DigitalSignature eSign; // the eSignature of the doctor
-    //Constant because if someone edits it, they'll need to change some code to implement these new instructions
 
     public MedicalPrescription(HealthCardID hcID) {
         if (hcID == null)

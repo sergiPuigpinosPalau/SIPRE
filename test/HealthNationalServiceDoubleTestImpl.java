@@ -9,13 +9,13 @@ import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.util.*;
 
-public class HealthNationalServiceDobleTest implements HealthNationalService {
+public class HealthNationalServiceDoubleTestImpl implements HealthNationalService {
 
     List<ProductSpecification> catalogueDatabase;
     List<ProductSpecification> listOfSelectedProducts;
     Map<HealthCardID, List<MedicalPrescription>> database;
 
-    public HealthNationalServiceDobleTest() throws InvalidUPCFormat, InvalidPriceFormat, StringTooLongException, InvalidCIPFormat {
+    public HealthNationalServiceDoubleTestImpl() throws InvalidUPCFormat, InvalidPriceFormat, StringTooLongException, InvalidCIPFormat {
         catalogueDatabase = new LinkedList<>();
         listOfSelectedProducts = new LinkedList<>();
         database = new HashMap<>();

@@ -6,11 +6,11 @@ import services.ScheduledVisitAgenda;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ScheduledVisitAgendaDobleTest implements ScheduledVisitAgenda {
+public class ScheduledVisitAgendaDoubleTestImpl implements ScheduledVisitAgenda {
 
     List<HealthCardID> database;
 
-    public ScheduledVisitAgendaDobleTest() throws InvalidCIPFormat {
+    public ScheduledVisitAgendaDoubleTestImpl() throws InvalidCIPFormat {
         database = new LinkedList<>();
         database.add(new HealthCardID("BBBBBBBBAR444851805874780037"));
     }

@@ -16,7 +16,7 @@ public class ProductID {
         if (code.length() < 12)
             throw new InvalidUPCFormat();
 
-        for (char numb:code.toCharArray()) {
+        for (char numb : code.toCharArray()) {
             if (!Character.isDigit(numb))
                 throw new InvalidUPCFormat();
         }

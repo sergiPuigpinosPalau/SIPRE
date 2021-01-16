@@ -2,6 +2,8 @@ package medicalconsultation;
 
 import exceptions.IncorrectTakingGuidelinesException;
 
+import java.util.Objects;
+
 public class TakingGuideline { // Represents the taking guidelines of a medicine
 
     private DayMoment dayMoment;
@@ -10,7 +12,7 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
     private Posology posology;
 
     public TakingGuideline(DayMoment dayMoment, float duration, String instructions, float dose, float freq, FqUnit freqUnit) {
-        if (dayMoment==null || instructions==null || freqUnit==null)
+        if (dayMoment == null || instructions == null || freqUnit == null)
             throw new IllegalArgumentException();
         this.dayMoment = dayMoment;
         this.duration = duration;
@@ -18,17 +20,17 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
         this.posology = new Posology(dose, freq, freqUnit);
     }
 
-    public void modifyGuideline(String[] instruc) throws IncorrectTakingGuidelinesException{
-        try{
+    public void modifyGuideline(String[] instruc) throws IncorrectTakingGuidelinesException {
+        try {
             dayMoment = DayMoment.valueOf(instruc[0]);
-        } catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             if (!instruc[0].equals(""))
                 throw new IncorrectTakingGuidelinesException("Invalid instruction's format");
         }
 
-        try{
+        try {
             duration = Float.parseFloat(instruc[1]);
-        } catch (java.lang.NumberFormatException ex){
+        } catch (java.lang.NumberFormatException ex) {
             if (!instruc[1].equals(""))
                 throw new IncorrectTakingGuidelinesException("Invalid instruction's format");
         }
@@ -44,7 +46,7 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
     }
 
     public void setDayMoment(DayMoment dayMoment) {
-        if (dayMoment==null)
+        if (dayMoment == null)
             throw new IllegalArgumentException();
         this.dayMoment = dayMoment;
     }
@@ -62,7 +64,7 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
     }
 
     public void setInstructions(String instructions) {
-        if (instructions==null)
+        if (instructions == null)
             throw new IllegalArgumentException();
         this.instructions = instructions;
     }
@@ -72,8 +74,21 @@ public class TakingGuideline { // Represents the taking guidelines of a medicine
     }
 
     public void setPosology(Posology posology) {
-        if (posology==null)
+        if (posology == null)
             throw new IllegalArgumentException();
         this.posology = posology;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TakingGuideline that = (TakingGuideline) o;
+        return Float.compare(that.duration, duration) == 0 && dayMoment == that.dayMoment && Objects.equals(instructions, that.instructions) && Objects.equals(posology, that.posology);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dayMoment, duration, instructions, posology);
     }
 }

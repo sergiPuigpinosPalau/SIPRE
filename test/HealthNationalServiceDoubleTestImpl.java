@@ -1,4 +1,3 @@
-
 import data.HealthCardID;
 import data.ProductID;
 import exceptions.*;
@@ -8,18 +7,15 @@ import services.HealthNationalService;
 
 import java.math.BigDecimal;
 import java.net.ConnectException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class HealthNationalServiceDobleTest implements HealthNationalService {
+public class HealthNationalServiceDoubleTestImpl implements HealthNationalService {
 
     List<ProductSpecification> catalogueDatabase;
     List<ProductSpecification> listOfSelectedProducts;
-    Map<HealthCardID,List<MedicalPrescription>> database;
+    Map<HealthCardID, List<MedicalPrescription>> database;
 
-    public HealthNationalServiceDobleTest() throws InvalidUPCFormat, InvalidPriceFormat, StringTooLongException, InvalidCIPFormat {
+    public HealthNationalServiceDoubleTestImpl() throws InvalidUPCFormat, InvalidPriceFormat, StringTooLongException, InvalidCIPFormat {
         catalogueDatabase = new LinkedList<>();
         listOfSelectedProducts = new LinkedList<>();
         database = new HashMap<>();
@@ -40,14 +36,14 @@ public class HealthNationalServiceDobleTest implements HealthNationalService {
     @Override
     public MedicalPrescription getePrescription(HealthCardID hcID) throws HealthCardException, NotValidePrescriptionException, ConnectException {
         List<MedicalPrescription> list;
-        if ((list=database.get(hcID)) == null)
+        if ((list = database.get(hcID)) == null)
             throw new HealthCardException();
 
         if (list.isEmpty())
             throw new NotValidePrescriptionException();
 
-        return list.get(list.size()-1);
-    }//TODO ignora, soc estupid
+        return list.get(list.size() - 1);
+    }
 
     @Override
     public List<ProductSpecification> getProductsByKW(String keyWord) throws AnyKeyWordMedicineException, ConnectException {
@@ -55,7 +51,7 @@ public class HealthNationalServiceDobleTest implements HealthNationalService {
         List<ProductSpecification> catalogueRtn = new LinkedList<>();
 
         for (ProductSpecification product : catalogueDatabase) {
-            if (product.getDescription().toLowerCase().contains(keyWord.toLowerCase()) || product.getDescription().toLowerCase().contains(keyWord.toLowerCase().substring(0,keyWord.length()-2))) //TODO plural?
+            if (product.getDescription().toLowerCase().contains(keyWord.toLowerCase()) || product.getDescription().toLowerCase().contains(keyWord.toLowerCase().substring(0, keyWord.length() - 2)))
                 catalogueRtn.add(product);
         }
 
@@ -75,12 +71,9 @@ public class HealthNationalServiceDobleTest implements HealthNationalService {
         }
     }
 
-    //TODO no pots modificar els throws de l-implementacio per ajustar els testos, si acas els testos s'han d'adaptar
-
     @Override
     public MedicalPrescription sendePrescription(MedicalPrescription ePresc) throws ConnectException, NotValidePrescription, eSignatureException, NotCompletedMedicalPrescription {
-        //TODO retorna la mateixa prescripcio per amb un nou codi generat ja que l-unic que fa es guardar la epresc i donarli un nou codi
-        ePresc.setPrescCode(123465798); //TODO random
+        ePresc.setPrescCode(new Random().nextInt(999999));
         return ePresc;
     }
 }

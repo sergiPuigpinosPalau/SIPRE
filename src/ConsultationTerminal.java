@@ -11,13 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 
-public class ConsultationTerminal  {
+public class ConsultationTerminal {
     //Implements "Crear línea de prescripción" use case
     //Class responsible of managing input events (controlador fachada)
-
-    public void setCurrentePrescription(MedicalPrescription currentePrescription) {
-        this.currentePrescription = currentePrescription;
-    }
 
     private MedicalPrescription currentePrescription;
     private DigitalSignature doctorSignature;
@@ -26,9 +22,8 @@ public class ConsultationTerminal  {
     private HealthNationalService HNS; //SNS
     private ScheduledVisitAgenda SVA;
 
-
     public ConsultationTerminal(DigitalSignature doctorSignature, HealthNationalService HNS, ScheduledVisitAgenda SVA) {
-        if (doctorSignature==null || HNS==null || SVA==null)
+        if (doctorSignature == null || HNS == null || SVA == null)
             throw new IllegalArgumentException();
         this.doctorSignature = doctorSignature;
         this.HNS = HNS;
@@ -57,7 +52,6 @@ public class ConsultationTerminal  {
     }
 
     public void enterMedicineGuidelines(String[] instruc) throws AnySelectedMedicineException, IncorrectTakingGuidelinesException, ProductAlreadyAdded {
-        //TODO no cal comprovar listOfProducts != null ja que la funcio selectProduct ja s'encarrega d'aixo
         if (selectedProduct == null || listOfProducts == null || !listOfProducts.contains(selectedProduct))
             throw new AnySelectedMedicineException();
         currentePrescription.addLine(selectedProduct.getUPCcode(), instruc);
@@ -77,15 +71,15 @@ public class ConsultationTerminal  {
         this.currentePrescription = HNS.sendePrescription(currentePrescription);
     }
 
-    public void printePresc() throws printingException { }
+    public void printePresc() throws printingException {
+    }
 
     public HealthNationalService getHNS() {
         return HNS;
     }
 
-
     public void setHNS(HealthNationalService HNS) {
-        if (HNS==null)
+        if (HNS == null)
             throw new IllegalArgumentException();
         this.HNS = HNS;
     }
@@ -95,7 +89,7 @@ public class ConsultationTerminal  {
     }
 
     public void setSVA(ScheduledVisitAgenda SVA) {
-        if (SVA==null)
+        if (SVA == null)
             throw new IllegalArgumentException();
         this.SVA = SVA;
     }
@@ -105,13 +99,17 @@ public class ConsultationTerminal  {
     }
 
     public void setDoctorSignature(DigitalSignature doctorSignature) {
-        if (doctorSignature==null)
+        if (doctorSignature == null)
             throw new IllegalArgumentException();
         this.doctorSignature = doctorSignature;
     }
 
     public MedicalPrescription getCurrentePrescription() {
         return currentePrescription;
+    }
+
+    public void setCurrentePrescription(MedicalPrescription currentePrescription) {
+        this.currentePrescription = currentePrescription;
     }
 
     public List<ProductSpecification> getListOfProducts() {

@@ -1,4 +1,3 @@
-
 import data.HealthCardID;
 import exceptions.HealthCardException;
 import exceptions.InvalidCIPFormat;
@@ -7,14 +6,13 @@ import services.ScheduledVisitAgenda;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ScheduledVisitAgendaDobleTest implements ScheduledVisitAgenda {
-    //TODO InvalidCIPFormat es fa al introduir codi, getHealthCcardId es un getter que retornr un cardID ja creat
+public class ScheduledVisitAgendaDoubleTestImpl implements ScheduledVisitAgenda {
 
     List<HealthCardID> database;
 
-    public ScheduledVisitAgendaDobleTest() throws InvalidCIPFormat {
+    public ScheduledVisitAgendaDoubleTestImpl() throws InvalidCIPFormat {
         database = new LinkedList<>();
-        database.add(new HealthCardID("BBBBBBBBAR444851805874780037")); //TODO mateix problema, gets no poden crear instancies
+        database.add(new HealthCardID("BBBBBBBBAR444851805874780037"));
     }
 
     @Override
